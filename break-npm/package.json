@@ -1,0 +1,16 @@
+{
+    "name": "couch-scripts",
+    "version": "0.0.1233",
+    "description": "couch scripts",
+    "contributors": [
+        {
+            "name": "James Young",
+            "email": "james.young@turner.com"
+        }
+    ],
+    "dependencies": {
+        "exec-sync": "0.1.5",
+        "grunt": "0.4.1",
+        "grunt-bump": "0.0.2"
+    }
+}
