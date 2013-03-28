@@ -2,27 +2,19 @@
 /*jslint node: true */
 
 /*
-# perl -ne 'if(/(.*)/.*$/){print $1."\n";}'
-
-# get a revision
-# curl -s http://tnpm.cnn.vgtf.net:5984/registry-backup/0x23 | cut -f2 -d, | cut -f2 -d: | cut -f2 -d\"
-
-# delete a document
-# curl -X DELETE http://admin@tnpm.cnn.vgtf.net:5984/registry-backup/0x21?rev=3-0e422a52b4902ef18228b4443d0da70b
-
-# get all doc ids and revision
-# curl http://tnpm.cnn.vgtf.net:5984/registry-backup/_all_docs
-*/
+ * Purpose: This script deletes 40 documents from a couch database then does a
+ * publish of a package.  If the publish succeeds it will delete another 40
+ * documents.  This will continue until a publish failure, or all the documents
+ * are deleted.  This was needed to troublshoot an issue where publishes would
+ * fail in a new, empty database, but would work fine in a fully replicated
+ * database.
+ */
 
 
-
-var sys = require('sys'),
-    http = require('http'),
-    child,
-    request,
+var publishCommand = 'npm --registry http://tnpm.cnn.vgtf.net:5984/registry-backup/_design/scratch/_rewrite --userconfig=/Users/jayoung/.ztnpmrc publish',
     execSync = require('exec-sync'),
-    publishCommand = 'npm --registry http://tnpm.cnn.vgtf.net:5984/registry-backup/_design/scratch/_rewrite --userconfig=/Users/jayoung/.ztnpmrc publish';
-
+    http = require('http'),
+    request;
 
 
 request = http.get({
@@ -39,9 +31,8 @@ request = http.get({
 
     response.on('end', function () {
         var parsedContent = JSON.parse(content),
-            execResult,
-            success,
             docs = parsedContent.rows,
+            execResult,
             key,
             rev,
             i;
@@ -75,9 +66,8 @@ request = http.get({
 });
 
 
-
 request.on('error', function (error) {
     'use strict';
     console.log('error: ' + error.message);
-    return false;
 });
+

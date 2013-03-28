@@ -1,7 +1,7 @@
 {
-    "name": "couch-scripts",
-    "version": "0.0.1233",
-    "description": "couch scripts",
+    "name": "break-npm",
+    "version": "0.0.1",
+    "description": "break-npm",
     "contributors": [
         {
             "name": "James Young",
@@ -14,3 +14,4 @@
         "grunt-bump": "0.0.2"
     }
 }
+
