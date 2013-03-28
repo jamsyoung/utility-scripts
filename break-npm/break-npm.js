@@ -8,7 +8,7 @@
 # curl -s http://tnpm.cnn.vgtf.net:5984/registry-backup/0x23 | cut -f2 -d, | cut -f2 -d: | cut -f2 -d\"
 
 # delete a document
-# curl -X DELETE http://admin:ht0401@tnpm.cnn.vgtf.net:5984/registry-backup/0x21?rev=3-0e422a52b4902ef18228b4443d0da70b
+# curl -X DELETE http://admin@tnpm.cnn.vgtf.net:5984/registry-backup/0x21?rev=3-0e422a52b4902ef18228b4443d0da70b
 
 # get all doc ids and revision
 # curl http://tnpm.cnn.vgtf.net:5984/registry-backup/_all_docs
