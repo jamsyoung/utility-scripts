@@ -7,7 +7,7 @@
 
 
 var execSync = require('exec-sync'),
-    targetHost = "admin:turner@npm.cnn.vgtf.net:5984/_replicate",
+    targetHost = "OMITTED@npm.cnn.vgtf.net:5984/_replicate",
     result,
     json = {
         source: "http://isaacs.iriscouch.com/registry/",
