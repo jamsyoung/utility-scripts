@@ -1,0 +1,11 @@
+{
+    "name": "pnpm-primer",
+    "version": "0.0.1",
+    "description": "Prime a private npm repository with a bunch of packages",
+    "main": "prime-pnpm.js",
+    "author": "James Young",
+    "dependencies": {
+        "exec-sync": "0.1.5"
+    },
+    "license": "MIT"
+}
