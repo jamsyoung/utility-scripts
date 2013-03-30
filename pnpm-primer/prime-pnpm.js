@@ -1,78 +1,42 @@
 #!/usr/bin/env node
-/*jslint node: true */
+/*jslint node: true, nomen: true */
 
 /*
- * Purpose: Prime a private npm repository with a bunch of packages
+ * Purpose: Replicate one or more packages from npmjs.org to your private npm registry.
  */
 
-
-var execSync = require('exec-sync'),
-    targetHost = "OMITTED@npm.cnn.vgtf.net:5984/_replicate",
+var curlCommand,
+    targetHost,
+    execSync = require('exec-sync'),
     result,
+    argv = require('optimist')
+        .usage('Usage: pnpm-replicate http://[your-private-registry][:port] --id package-name[,package-name] [--target dbname] [--dryrun]')
+        .demand([1, 'id'])
+        ['default']('target', 'registry')
+        ['default']('dryrun', false)
+        .describe('id', 'A comma separated list of packages to replicate. Example: one,two,three')
+        .describe('target', 'The target database in your private registry to replicate to.')
+        .describe('dryrun', 'Does not replicate.  Displays the curl command that would be used.')
+        .argv,
     json = {
         source: "http://isaacs.iriscouch.com/registry/",
-        target: "registry",
-        create_target: true,
-        doc_ids: [
-            "async",
-            "aws-sign",
-            "boom",
-            "buffer-crc32",
-            "bytes",
-            "check-types",
-            "colors",
-            "combined-stream",
-            "commander",
-            "complexity-report",
-            "connect",
-            "consolidate",
-            "cookie",
-            "cookie-jar",
-            "cookie-signature",
-            "cradle",
-            "cryptiles",
-            "debug",
-            "delayed-stream",
-            "dust-compiler",
-            "dustjs-helpers",
-            "dustjs-linkedin",
-            "express",
-            "follow",
-            "forever-agent",
-            "form-data",
-            "formidable",
-            "fresh",
-            "growl",
-            "hawk",
-            "hoek",
-            "jade",
-            "json-stringify-safe",
-            "methods",
-            "mime",
-            "mkdirp",
-            "mocha",
-            "ms",
-            "node-uuid",
-            "nodemon",
-            "oauth-sign",
-            "pause",
-            "qs",
-            "range-parser",
-            "request",
-            "send",
-            "sntp",
-            "tunnel-agent",
-            "vargs",
-            "watch",
-            "wrench",
-            "xunit-file",
-            "yuicompressor"
-        ]
-    },
-    curlCommand = "curl -sH 'Content-Type: application/json' -X POST 'http://" + targetHost + "' -d '" + JSON.stringify(json) + "'";
+        target: argv.target,
+        create_target: true
+    };
+
+json.doc_ids = argv.id.split(',');
+
+targetHost = argv._ + '/_replicate';
+
+curlCommand = "\n[INFO] curl -sH 'Content-Type: application/json' -X POST '" + targetHost + "' -d '" + JSON.stringify(json) + "'";
 
 console.log(curlCommand);
 
+if (argv.dryrun) {
+    console.log('\n[INFO] This was a dry run, no packages were replicated.');
+    process.exit();
+}
+
 result = execSync(curlCommand);
 
-console.log(result);
+console.log('\n[INFO]' + result);
