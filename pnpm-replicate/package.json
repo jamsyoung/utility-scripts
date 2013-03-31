@@ -1,10 +1,11 @@
 {
     "name": "pnpm-replicate",
+    "preferGlobal": true,
     "version": "0.0.1",
-    "description": "Replicate one or more packages from npmjs.org to your private npm registry.",
     "author": "James Young <jmeyoung@gmail.com>",
+    "description": "Replicate one or more packages from npmjs.org to a private npm registry.",
     "bin": {
-        "pnpm-replicate": "./bin/pnpm-replicate.js"
+        "pnpm-replicate": "./pnpm-replicate.js"
     },
     "main": "pnpm-replicate.js",
     "dependencies": {
@@ -15,5 +16,10 @@
     "engines": {
         "node": ">=0.8.18"
     },
+    "keywords": [
+        "pnpm",
+        "replicate",
+        "cli"
+    ],
     "license": "MIT"
 }

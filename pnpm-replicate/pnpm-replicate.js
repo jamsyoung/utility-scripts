@@ -8,7 +8,7 @@ var packageConfig = require('./package.json'),
     colors = require('colors'),
     result,
     argv = require('optimist')
-        .usage('Usage: pnpm-replicate http[s]://your-private-registry>[:port] --id package-name[,package-name] [--target dbname] [--dryrun]')
+        .usage('Usage: pnpm-replicate http[s]://your-private-registry[:port] --id package-name[,package-name] [--target dbname] [--dryrun]')
         .demand([1, 'id'])
         ['default']('target', 'registry')
         ['default']('dryrun', false)
@@ -28,7 +28,7 @@ targetHost = argv._ + '/_replicate';
 
 curlCommand = "curl -sH 'Content-Type: application/json' -X POST '" + targetHost + "' -d '" + JSON.stringify(json) + "'";
 
-console.log('[INFO] '.green + 'This is the curl command that will be executed:');
+console.log('[INFO] '.green + 'curl command that will be executed');
 console.log(curlCommand);
 
 if (argv.dryrun) {
@@ -38,5 +38,5 @@ if (argv.dryrun) {
 
 result = execSync(curlCommand, true);
 
-console.log('\n[INFO] '.green + 'Response follows:');
+console.log('\n[INFO] '.green + 'Response');
 console.log(result.stdout);
