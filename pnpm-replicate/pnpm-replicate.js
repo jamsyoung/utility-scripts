@@ -1,16 +1,14 @@
 #!/usr/bin/env node
 /*jslint node: true, nomen: true */
 
-/*
- * Purpose: Replicate one or more packages from npmjs.org to your private npm registry.
- */
-
-var curlCommand,
+var packageConfig = require('./package.json'),
+    curlCommand,
     targetHost,
     execSync = require('exec-sync'),
+    colors = require('colors'),
     result,
     argv = require('optimist')
-        .usage('Usage: pnpm-replicate http://[your-private-registry][:port] --id package-name[,package-name] [--target dbname] [--dryrun]')
+        .usage('Usage: pnpm-replicate http[s]://your-private-registry>[:port] --id package-name[,package-name] [--target dbname] [--dryrun]')
         .demand([1, 'id'])
         ['default']('target', 'registry')
         ['default']('dryrun', false)
@@ -28,15 +26,17 @@ json.doc_ids = argv.id.split(',');
 
 targetHost = argv._ + '/_replicate';
 
-curlCommand = "\n[INFO] curl -sH 'Content-Type: application/json' -X POST '" + targetHost + "' -d '" + JSON.stringify(json) + "'";
+curlCommand = "curl -sH 'Content-Type: application/json' -X POST '" + targetHost + "' -d '" + JSON.stringify(json) + "'";
 
+console.log('[INFO] '.green + 'This is the curl command that will be executed:');
 console.log(curlCommand);
 
 if (argv.dryrun) {
-    console.log('\n[INFO] This was a dry run, no packages were replicated.');
+    console.log('[NOTICE] This was a dry run, no packages were replicated.'.red);
     process.exit();
 }
 
-result = execSync(curlCommand);
+result = execSync(curlCommand, true);
 
-console.log('\n[INFO]' + result);
+console.log('\n[INFO] '.green + 'Response follows:');
+console.log(result.stdout);
